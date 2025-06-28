@@ -78,30 +78,13 @@
   </div>
   <div class="status" id="status"></div>
 
-  <script>
-    async function handleClick(message) {
-      const status = document.getElementById('status');
-      status.textContent = 'Connecting...';
-
-      const webhookUrl = 'https://rewardfactory.app.n8n.cloud/webhook/smart-message-redirect';
-      const url = `${webhookUrl}?message=${encodeURIComponent(message)}`;
-
-      try {
-        const response = await fetch(url);
-        const text = await response.text();
-        const urlMatch = text.match(/URL=(.*)"/);
-
-        if (urlMatch && urlMatch[1]) {
-          status.textContent = 'Redirecting...';
-          window.location.href = urlMatch[1];
-        } else {
-          status.textContent = 'Sorry, no redirect found in the response.';
-        }
-      } catch (error) {
-        console.error(error);
-        status.textContent = 'Could not connect to the server.';
-      }
-    }
-  </script>
+<script>
+  function handleClick(message) {
+    const webhookUrl = 'https://rewardfactory.app.n8n.cloud/webhook/smart-message-redirect';
+    const url = `${webhookUrl}?message=${encodeURIComponent(message)}`;
+    // Redirect user directly — no CORS issues
+    window.location.href = url;
+  }
+</script>
 </body>
 </html>
