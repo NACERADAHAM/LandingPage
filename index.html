@@ -83,7 +83,7 @@
       const status = document.getElementById('status');
       status.textContent = 'Connecting...';
 
-      const webhookUrl = 'https://rewardfactory.app.n8n.cloud/webhook-test/smart-message-redirect';
+      const webhookUrl = 'https://rewardfactory.app.n8n.cloud/webhook/smart-message-redirect';
       const url = `${webhookUrl}?message=${encodeURIComponent(message)}`;
 
       try {
