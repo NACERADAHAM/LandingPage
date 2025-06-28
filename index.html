@@ -28,10 +28,9 @@
     }
 
     h1 {
-      font-size: 2.8rem;
-      margin-bottom: 40px;
+      font-size: 2.4rem;
+      margin-bottom: 30px;
       color: #1e1e1e;
-      animation: fadeIn 1s ease-in;
     }
 
     .button-group {
@@ -39,7 +38,7 @@
       gap: 20px;
       flex-wrap: wrap;
       justify-content: center;
-      animation: fadeIn 1.2s ease-in;
+      margin-bottom: 20px;
     }
 
     button {
@@ -47,7 +46,7 @@
       color: white;
       border: none;
       padding: 15px 25px;
-      font-size: 1.1rem;
+      font-size: 1rem;
       border-radius: 12px;
       cursor: pointer;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
@@ -60,21 +59,21 @@
       transform: translateY(-3px) scale(1.03);
     }
 
-    .status {
-      margin-top: 25px;
-      font-size: 1rem;
-      color: #d32f2f;
-      animation: fadeIn 1.5s ease-in;
+    .lang-switch {
+      position: absolute;
+      top: 20px;
+      right: 20px;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    .status {
+      margin-top: 15px;
+      font-size: 1rem;
+      color: #d32f2f;
     }
 
     @media (max-width: 500px) {
       h1 {
-        font-size: 2rem;
+        font-size: 1.8rem;
       }
       button {
         width: 100%;
@@ -83,14 +82,40 @@
   </style>
 </head>
 <body>
-  <h1>Smart Help – Support Starts in Your Community</h1>
-  <div class="button-group">
-    <button onclick="handleClick('help')">🤝 Looking to help or get help from your neighbors ? </button>
-    <button onclick="handleClick('lost')">🔍 Lost or found something in your neighborhood ? </button>
+  <div class="lang-switch">
+    <button onclick="setLang('en')">EN</button>
+    <button onclick="setLang('fr')">FR</button>
   </div>
+
+  <h1 id="title">Smart Help – Support Starts in Your Community</h1>
+
+  <div class="button-group">
+    <button onclick="handleClick('help')" id="btn1">🤝 Looking to help or get help from your neighbors?</button>
+    <button onclick="handleClick('lost')" id="btn2">🔍 Lost or found something in your neighborhood?</button>
+  </div>
+
   <div class="status" id="status"></div>
 
   <script>
+    const translations = {
+      en: {
+        title: "Smart Help – Support Starts in Your Community",
+        btn1: "🤝 Looking to help or get help from your neighbors?",
+        btn2: "🔍 Lost or found something in your neighborhood?"
+      },
+      fr: {
+        title: "Smart Help – Le soutien commence dans votre communauté",
+        btn1: "🤝 Vous voulez aider ou recevoir de l’aide de vos voisins ?",
+        btn2: "🔍 Vous avez perdu ou trouvé quelque chose dans votre quartier ?"
+      }
+    };
+
+    function setLang(lang) {
+      document.getElementById('title').innerText = translations[lang].title;
+      document.getElementById('btn1').innerText = translations[lang].btn1;
+      document.getElementById('btn2').innerText = translations[lang].btn2;
+    }
+
     function handleClick(message) {
       const webhookUrl = 'https://rewardfactory.app.n8n.cloud/webhook/smart-message-redirect';
       const url = `${webhookUrl}?message=${encodeURIComponent(message)}`;
