@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Help</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+      font-size: 2rem;
+      margin-bottom: 40px;
+    }
+
+    button {
+      padding: 15px 30px;
+      margin: 10px;
+      font-size: 1.1rem;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    .error {
+      margin-top: 20px;
+      color: red;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>How can we help you today?</h1>
+  <button onclick="handleClick('help')">I want to help</button>
+  <button onclick="handleClick('lost')">I lost something</button>
+  <div class="error" id="errorMsg"></div>
+
+  <script>
+    async function handleClick(message) {
+      const webhookUrl = 'https://rewardfactory.app.n8n.cloud/webhook-test/smart-message-redirect';
+      const url = `${webhookUrl}?message=${encodeURIComponent(message)}`;
+      const errorMsg = document.getElementById('errorMsg');
+      errorMsg.textContent = '';
+
+      try {
+        const response = await fetch(url);
+        const text = await response.text();
+        const urlMatch = text.match(/URL=(.*)"/);
+
+        if (urlMatch && urlMatch[1]) {
+          window.location.href = urlMatch[1];
+        } else {
+          errorMsg.textContent = 'Unexpected response. No redirect URL found.';
+        }
+      } catch (err) {
+        console.error(err);
+        errorMsg.textContent = 'Could not connect to the server.';
+      }
+    }
+  </script>
+</body>
+</html>
